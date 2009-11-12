@@ -1,0 +1,5 @@
+About gogit
+-----------
+GoGit may be a full implementation of git in the new language go. Its meant to be a useful practice session to learn about the ways of the go language.
+
+Depending on how things evolve, it might one day be quite usable.
