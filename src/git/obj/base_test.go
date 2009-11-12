@@ -1,5 +1,7 @@
-import testing
+package obj
 
-func (t *testing.T) {
-	t.failNow();
+import "testing"
+
+func TestBasics(t *testing.T)  {
+	t.FailNow();
 }
