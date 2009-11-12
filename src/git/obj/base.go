@@ -13,13 +13,13 @@ import (
 type Sha1 [20]byte;
 
 // String converts a Sha1 to a hexadecimal representation
-func (s Sha1) String() string {
-	return hex.EncodeToString(&s)
+func (s *Sha1) String() string {
+	return hex.EncodeToString(s)
 }
 
 // Compare returns True if lhs == rhs
-func (s Sha1) Equals( rhs *Sha1 ) bool {
-	return bytes.Compare(&s, rhs) == 0;
+func (s *Sha1) Equals( rhs *Sha1 ) bool {
+	return bytes.Compare(s, rhs) == 0;
 }
 
 

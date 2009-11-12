@@ -45,6 +45,18 @@ func byteManipPointer(a *[10]byte) {
 	a[0] = 3;
 }
 
+
+type tenbyte [10]byte
+
+// discover whether instance methods copy their instance when called
+func (b tenbyte) makeChange() {
+	b[0] = 4;
+}
+
+func (bp *tenbyte) makeChangePointer() {
+	bp[0] = 4;
+}
+
 func TestArrayPassing(t *testing.T) {
 	var b [10]byte;
 	byteManip(b);
@@ -57,4 +69,29 @@ func TestArrayPassing(t *testing.T) {
 		t.Error( "pointer bytes passed by copy" );
 	}
 	
+	// test whether methods on value types are true copies
+	var tb tenbyte;
+	tb.makeChange();
+	if tb[0] == 0 {
+		// t.Error( "Ups, it copies the value" );
+	}
+	
+	// what happens to pointers ? 
+	// be explict here
+	var tbp *tenbyte= new(tenbyte);	
+	tbp.makeChange();
+	if tbp[0] == 0 {
+		// t.Error( "Ups, even pointers are copied, fair enough though" );
+	}
+	
+	// call pointer func on non-pointer
+	tb.makeChangePointer();
+	if tb[0] != 4 {
+		t.Error( "Change did not propagate to stack instance" );
+	}
+	
+	tbp.makeChangePointer();
+	if tbp[0] != 4 {
+		t.Error( "Change did not propagate to heap instance" );
+	}
 }
