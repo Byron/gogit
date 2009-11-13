@@ -1,6 +1,7 @@
 package misc
 
 import "testing"
+import "fmt"
 
 /* ASSORTED TESTS */
 
@@ -102,5 +103,30 @@ func TestFunctionInvocation(t *testing.T) {
 	sp.makeChangePointer();
 	if sp.v != 1 {
 		t.Error( "Change did not propagate to heap instance" );
+	}
+}
+
+
+func every( out chan<- uint, number uint ) {
+	c := uint(2);
+	for {
+		if c % number == 0 {
+			out <- c;
+		}
+		c += 1;
+	}
+}
+
+func TestChannelThreading(t *testing.T) {
+	result := make( chan uint, 10 );
+	
+	// should take a while - would expect at least 2 threads here
+	go every( result, 100000000 );
+	go every( result, 50000001 );
+	
+	// get some values
+	for i := 0; i < 20; i++ {
+		fmt.Println( "Got result: ", <-result );
+		
 	}
 }
